@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Χορευτικός Σύλλογος 6ου Δ.Σ. Δράμας - Παρουσιολόγιο</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS Library for Excel Export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            /* Υποστήριξη Safe Area για iPhone Notch / Dynamic Island */
+            padding-top: max(20px, env(safe-area-inset-top));
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
+            padding-left: max(20px, env(safe-area-inset-left));
+            padding-right: max(20px, env(safe-area-inset-right));
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header & Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .creator-badge {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-left: 36px;
+        }
+
+        .creator-badge strong {
+            color: var(--primary-color);
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #e2e8f0;
+            padding: 4px;
+            border-radius: var(--radius);
+            gap: 4px;
+        }
+
+        .nav-tab {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+        }
+
+        .nav-tab.active {
+            background: var(--card-bg);
+            color: var(--primary-dark);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .stat-info h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .stat-info .number {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Views Layout */
+        .main-content {
+            flex: 1;
+        }
+
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* Forms & Inputs - Διορθώθηκε το font-size σε 16px για να αποτραπεί το auto-zoom στο Safari iOS */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input, select, textarea {
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px; /* 16px αποτρέπει το αυτόματο zoom στο Safari iOS */
+            outline: none;
+            transition: border-color 0.2s;
+            background-color: #ffffff;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary-color);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+            user-select: none;
+        }
+
+        .btn:hover { opacity: 0.9; }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-secondary { background: #cbd5e1; color: var(--text-main); }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        tr:hover { background-color: #f8fafc; }
+
+        .month-header-row {
+            background-color: #e2e8f0 !important;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        .month-header-row td {
+            padding: 12px;
+            font-size: 1.05rem;
+        }
+
+        /* Badges & Toggles */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-success { background: #dcfce7; color: #15803d; }
+        .badge-danger { background: #fee2e2; color: #b91c1c; }
+        .badge-pending { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+
+        .toggle-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            background: white;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .toggle-btn.active-present { background: #dcfce7; color: #15803d; border-color: #22c55e; }
+        .toggle-btn.active-absent { background: #fee2e2; color: #b91c1c; border-color: #ef4444; }
+        .toggle-btn.active-paid { background: #dbeafe; color: #1d4ed8; border-color: #3b82f6; }
+        .toggle-btn.active-pending { background: #fef3c7; color: #b45309; border-color: #f59e0b; }
+
+        /* Actions */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 6px;
+        }
+
+        .icon-btn:hover { color: var(--primary-color); }
+        .icon-btn.delete:hover { color: var(--danger); }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active { display: flex; }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Search input */
+        .search-box {
+            position: relative;
+            min-width: 250px;
+        }
+        .search-box input {
+            width: 100%;
+            padding-left: 35px;
+        }
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* Footer Style */
+        footer {
+            margin-top: 30px;
+            padding: 15px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        footer strong {
+            color: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; align-items: stretch; }
+            .nav-tabs { width: 100%; justify-content: space-between; overflow-x: auto; }
+            .nav-tab { flex: 1; justify-content: center; padding: 10px 8px; font-size: 0.85rem; white-space: nowrap; }
+            .header-actions { width: 100%; justify-content: space-between; }
+            .creator-badge { margin-left: 0; margin-top: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fa-solid fa-people-group"></i>
+                <span>Χορευτικός Σύλλογος 6ου Δ.Σ. Δράμας</span>
+            </div>
+            <div class="creator-badge">
+                <i class="fa-solid fa-code"></i> Δημιουργία: <strong>Ιωάννης Τσιατμάς</strong>
+            </div>
+        </div>
+        <div class="nav-tabs">
+            <button type="button" class="nav-tab active" onclick="switchTab('attendance')">
+                <i class="fa-solid fa-calendar-check"></i> Παρουσιολόγιο
+            </button>
+            <button type="button" class="nav-tab" onclick="switchTab('payments')">
+                <i class="fa-solid fa-wallet"></i> Συνδρομές
+            </button>
+            <button type="button" class="nav-tab" onclick="switchTab('members')">
+                <i class="fa-solid fa-users"></i> Μητρώο Μελών
+            </button>
+            <button type="button" class="nav-tab" onclick="switchTab('history')">
+                <i class="fa-solid fa-clock-rotate-left"></i> Ιστορικό
+            </button>
+            <button type="button" class="nav-tab" onclick="switchTab('settings')">
+                <i class="fa-solid fa-gear"></i> Ρυθμίσεις
+            </button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Overview Stats -->
+        <div class="stats-grid">
+            <div class="stat-card" id="cardTotalMembers">
+                <div class="stat-icon" style="background: #dbeafe; color: #1d4ed8;">
+                    <i class="fa-solid fa-user-group"></i>
+                </div>
+                <div class="stat-info">
+                    <h4>Σύνολο Μελών</h4>
+                    <div class="number" id="statTotalMembers">0</div>
+                </div>
+            </div>
+            <div class="stat-card" id="cardPresentDate">
+                <div class="stat-icon" style="background: #dcfce7; color: #15803d;">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h4>Παρόντες <span id="statDateLabel" style="font-size:0.75rem; color:var(--primary-dark);"></span></h4>
+                    <div class="number" id="statPresentCount">0</div>
+                </div>
+            </div>
+            <div class="stat-card" id="cardPendingPayments">
+                <div class="stat-icon" style="background: #fef3c7; color: #b45309;">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+                <div class="stat-info">
+                    <h4>Εκκρεμείς Συνδρομές <span id="statMonthLabel" style="font-size:0.75rem; color:#b45309;"></span></h4>
+                    <div class="number" id="statPendingCount">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 1: ATTENDANCE -->
+        <div id="viewAttendance" class="view active">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-clipboard-user"></i> Καταγραφή Παρουσιών</h3>
+                    <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px;">
+                        <label for="attendanceDate" style="margin:0;">Ημερομηνία:</label>
+                        <input type="date" id="attendanceDate" onchange="loadAttendanceForDate()">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ονοματεπώνυμο</th>
+                                <th>Τηλέφωνο</th>
+                                <th>Παρουσία</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: PAYMENTS (MONTHLY) -->
+        <div id="viewPayments" class="view">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-money-bill-transfer"></i> Διαχείριση Μηνιαίων Συνδρομών</h3>
+                    <div class="header-actions">
+                        <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px;">
+                            <label for="paymentMonth" style="margin:0;">Μήνας:</label>
+                            <input type="month" id="paymentMonth" onchange="loadPaymentsForMonth()">
+                        </div>
+                        <button type="button" class="btn btn-success" onclick="exportMonthToExcel()" title="Εξαγωγή Παρουσιών & Συνδρομών Μήνα σε Excel">
+                            <i class="fa-solid fa-file-excel"></i> Εξαγωγή σε Excel
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ονοματεπώνυμο</th>
+                                <th>Τηλέφωνο</th>
+                                <th>Κατάσταση Συνδρομής</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentsTableBody">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: MEMBERS MANAGEMENT -->
+        <div id="viewMembers" class="view">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-user-plus"></i> Διαχείριση Μελών</h3>
+                    <button type="button" class="btn btn-primary" onclick="openMemberModal()">
+                        <i class="fa-solid fa-plus"></i> Νέο Μέλος
+                    </button>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="memberSearch" placeholder="Αναζήτηση μέλους..." oninput="renderMembersTable()">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ονοματεπώνυμο</th>
+                                <th>Ημ. Εγγραφής</th>
+                                <th>Τηλέφωνα</th>
+                                <th>Email</th>
+                                <th>Σημειώσεις</th>
+                                <th>Ενέργειες</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersTableBody">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: HISTORY & REPORTS -->
+        <div id="viewHistory" class="view">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-list-check"></i> Ιστορικό Παρουσιών ανά Μήνα & Ημερομηνία</h3>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ημερομηνία</th>
+                                <th>Σύνολο Μελών</th>
+                                <th>Παρόντες</th>
+                                <th>Απόντες</th>
+                                <th>Ενέργειες</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <!-- Dynamic Rows Grouped By Month -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 5: SETTINGS & BACKUP/RESTORE -->
+        <div id="viewSettings" class="view">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-file-import"></i> Διαχείριση Αντιγράφων Ασφαλείας (JSON Backup / Restore)</h3>
+                </div>
+                <p style="color: var(--text-muted); margin-bottom: 20px; font-size:0.95rem; line-height: 1.5;">
+                    Κατεβάστε ένα αντίγραφο ασφαλείας των δεδομένων σας σε μορφή αρχείου JSON, ή εισάγετε ένα υπάρχον αρχείο backup για συγχρονισμό μεταξύ διαφόρων συσκευών (Windows, iPhone, Android).
+                </p>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    <button type="button" class="btn btn-success" onclick="exportBackupJSON()">
+                        <i class="fa-solid fa-download"></i> Εξαγωγή Αντιγράφου (Download JSON)
+                    </button>
+                    
+                    <button type="button" class="btn btn-warning" onclick="triggerImportJSON()">
+                        <i class="fa-solid fa-upload"></i> Εισαγωγή Αντιγράφου (Import JSON)
+                    </button>
+                    <input type="file" id="importJsonInput" accept=".json" style="display: none;" onchange="handleImportJSON(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD / EDIT MEMBER -->
+    <div class="modal" id="memberModal">
+        <div class="modal-content">
+            <h3 id="modalTitle" style="margin-bottom: 15px;">Προσθήκη Μέλους</h3>
+            <form id="memberForm" onsubmit="saveMember(event)">
+                <input type="hidden" id="memberId">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Όνομα *</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Επίθετο *</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Ημερομηνία Εγγραφής *</label>
+                        <input type="date" id="createdDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Τηλέφωνο 1</label>
+                        <input type="text" id="phone1">
+                    </div>
+                    <div class="form-group">
+                        <label>Τηλέφωνο 2</label>
+                        <input type="text" id="phone2">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Email</label>
+                        <input type="email" id="email">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Σημειώσεις</label>
+                        <textarea id="notes" rows="3"></textarea>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeMemberModal()">Ακύρωση</button>
+                    <button type="submit" class="btn btn-primary">Αποθήκευση</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: CUSTOM IMPORT OPTIONS -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 15px; color: var(--primary-dark);"><i class="fa-solid fa-file-import"></i> Εισαγωγή Δεδομένων</h3>
+            <p style="margin-bottom: 20px; color: var(--text-main); line-height: 1.5;" id="importModalText">
+                Πώς επιθυμείτε να προχωρήσετε με την εισαγωγή του αρχείου;
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button type="button" class="btn btn-danger" onclick="confirmImport('overwrite')" style="justify-content: center;">
+                    <i class="fa-solid fa-arrows-rotate"></i> Αντικατάσταση Όλων των Δεδομένων
+                </button>
+                <button type="button" class="btn btn-primary" onclick="confirmImport('merge')" style="justify-content: center;">
+                    <i class="fa-solid fa-code-merge"></i> Συγχώνευση με τα Υπάρχοντα
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="closeImportModal()" style="justify-content: center; margin-top: 5px;">
+                    Ακύρωση
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Χορευτικός Σύλλογος 6ου Δημοτικού Σχολείου Δράμας &bull; Ψηφιακό Παρουσιολόγιο</p>
+        <p style="margin-top: 4px; font-size: 0.8rem;">Σχεδιασμός & Ανάπτυξη: <strong>Ιωάννης Τσιατμάς</strong></p>
+    </footer>
+
+    <script>
+        // --- SAFE LOCAL STORAGE WRAPPERS (Fully Protects iOS Safari) ---
+        function safeGetStorage(key, fallback) {
+            try {
+                const val = localStorage.getItem(key);
+                return val ? JSON.parse(val) : fallback;
+            } catch (e) {
+                console.warn("LocalStorage read blocked or unavailable:", key);
+                return fallback;
+            }
+        }
+
+        function safeSetStorage(key, value) {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            } catch (e) {
+                console.warn("LocalStorage write blocked or unavailable:", key);
+            }
+        }
+
+        // --- DATA STORE ---
+        let members = [];
+        let attendanceData = {}; 
+        let monthlyPayments = {}; 
+        let pendingImportData = null; 
+
+        // --- HELPER FUNCTIONS FOR MEMBER ELIGIBILITY ---
+        function getMemberRegistrationDate(member) {
+            return member.createdDate || "2000-01-01";
+        }
+
+        function isMemberEligibleForDate(member, dateStr) {
+            const regDate = getMemberRegistrationDate(member);
+            if (regDate <= dateStr) return true;
+            if (attendanceData[dateStr] && attendanceData[dateStr][member.id]) return true;
+            return false;
+        }
+
+        function isMemberEligibleForMonth(member, monthStr) {
+            const regMonth = getMemberRegistrationDate(member).substring(0, 7);
+            if (regMonth <= monthStr) return true;
+            if (monthlyPayments[monthStr] && monthlyPayments[monthStr][member.id]) return true;
+            return false;
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener("DOMContentLoaded", () => {
+            loadDataFromLocalStorage();
+            
+            // Set default date (Today) & month (Current Month)
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+
+            const todayStr = `${year}-${month}-${day}`;
+            const currentMonthStr = `${year}-${month}`;
+
+            document.getElementById('attendanceDate').value = todayStr;
+            document.getElementById('paymentMonth').value = currentMonthStr;
+
+            switchTab('attendance');
+            refreshUI();
+        });
+
+        function loadDataFromLocalStorage() {
+            members = safeGetStorage('app_members_v2', []);
+            attendanceData = safeGetStorage('app_attendance_v3', {});
+            monthlyPayments = safeGetStorage('app_payments_v3', {});
+        }
+
+        function saveData() {
+            safeSetStorage('app_members_v2', members);
+            safeSetStorage('app_attendance_v3', attendanceData);
+            safeSetStorage('app_payments_v3', monthlyPayments);
+            refreshUI();
+        }
+
+        function refreshUI() {
+            renderStats();
+            loadAttendanceForDate();
+            loadPaymentsForMonth();
+            renderMembersTable();
+            renderHistoryTable();
+        }
+
+        // --- MANUAL BACKUP & RESTORE (100% iOS Safari / Blob Compatible) ---
+        function exportBackupJSON() {
+            const payload = {
+                appVersion: "3.0",
+                exportDate: new Date().toISOString(),
+                members: members,
+                attendanceData: attendanceData,
+                monthlyPayments: monthlyPayments
+            };
+
+            const jsonStr = JSON.stringify(payload, null, 2);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const today = new Date().toISOString().split('T')[0];
+            
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.href = url;
+            downloadAnchor.download = `DanceClub_Backup_${today}.json`;
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            
+            setTimeout(() => {
+                downloadAnchor.remove();
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+
+        function triggerImportJSON() {
+            document.getElementById('importJsonInput').click();
+        }
+
+        function handleImportJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (!importedData.members && !importedData.attendanceData && !importedData.monthlyPayments) {
+                        alert("Μη έγκυρη μορφή αρχείου backup.");
+                        return;
+                    }
+
+                    pendingImportData = importedData;
+                    document.getElementById('importModal').classList.add('active');
+
+                } catch (err) {
+                    alert("Σφάλμα κατά την ανάγνωση του αρχείου JSON: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; 
+        }
+
+        function closeImportModal() {
+            pendingImportData = null;
+            document.getElementById('importModal').classList.remove('active');
+        }
+
+        function confirmImport(mode) {
+            if (!pendingImportData) return;
+
+            if (mode === 'overwrite') {
+                members = pendingImportData.members || [];
+                attendanceData = pendingImportData.attendanceData || {};
+                monthlyPayments = pendingImportData.monthlyPayments || {};
+            } else if (mode === 'merge') {
+                const existingIds = new Set(members.map(m => m.id));
+                (pendingImportData.members || []).forEach(m => {
+                    if (!existingIds.has(m.id)) members.push(m);
+                });
+
+                Object.keys(pendingImportData.attendanceData || {}).forEach(date => {
+                    if (!attendanceData[date]) attendanceData[date] = {};
+                    Object.assign(attendanceData[date], pendingImportData.attendanceData[date]);
+                });
+
+                Object.keys(pendingImportData.monthlyPayments || {}).forEach(month => {
+                    if (!monthlyPayments[month]) monthlyPayments[month] = {};
+                    Object.assign(monthlyPayments[month], pendingImportData.monthlyPayments[month]);
+                });
+            }
+
+            saveData();
+            closeImportModal();
+            alert("Η εισαγωγή των δεδομένων ολοκληρώθηκε με επιτυχία!");
+        }
+
+        // --- NAVIGATION & VISIBILITY LOGIC ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+
+            const cardTotal = document.getElementById('cardTotalMembers');
+            const cardPresent = document.getElementById('cardPresentDate');
+            const cardPending = document.getElementById('cardPendingPayments');
+
+            const tabBtns = document.querySelectorAll('.nav-tab');
+
+            if (tabName === 'attendance') {
+                if (tabBtns[0]) tabBtns[0].classList.add('active');
+                document.getElementById('viewAttendance').classList.add('active');
+                cardTotal.style.display = 'flex';
+                cardPresent.style.display = 'flex';
+                cardPending.style.display = 'none';
+            } else if (tabName === 'payments') {
+                if (tabBtns[1]) tabBtns[1].classList.add('active');
+                document.getElementById('viewPayments').classList.add('active');
+                cardTotal.style.display = 'flex';
+                cardPresent.style.display = 'none';
+                cardPending.style.display = 'flex';
+            } else if (tabName === 'members') {
+                if (tabBtns[2]) tabBtns[2].classList.add('active');
+                document.getElementById('viewMembers').classList.add('active');
+                cardTotal.style.display = 'flex';
+                cardPresent.style.display = 'none';
+                cardPending.style.display = 'none';
+            } else if (tabName === 'history') {
+                if (tabBtns[3]) tabBtns[3].classList.add('active');
+                document.getElementById('viewHistory').classList.add('active');
+                cardTotal.style.display = 'flex';
+                cardPresent.style.display = 'none';
+                cardPending.style.display = 'none';
+            } else if (tabName === 'settings') {
+                if (tabBtns[4]) tabBtns[4].classList.add('active');
+                document.getElementById('viewSettings').classList.add('active');
+                cardTotal.style.display = 'none';
+                cardPresent.style.display = 'none';
+                cardPending.style.display = 'none';
+            }
+            renderStats();
+        }
+
+        // --- STATS ---
+        function renderStats() {
+            document.getElementById('statTotalMembers').innerText = members.length;
+            
+            const selectedDate = document.getElementById('attendanceDate').value;
+            document.getElementById('statDateLabel').innerText = `(${formatDateDisplay(selectedDate)})`;
+            const dayRecords = attendanceData[selectedDate] || {};
+            let presentCount = 0;
+            Object.values(dayRecords).forEach(status => {
+                if (status === 'present') presentCount++;
+            });
+            document.getElementById('statPresentCount').innerText = presentCount;
+
+            const selectedMonth = document.getElementById('paymentMonth').value;
+            document.getElementById('statMonthLabel').innerText = `(${formatMonthDisplay(selectedMonth)})`;
+            const monthRecords = monthlyPayments[selectedMonth] || {};
+            let pendingCount = 0;
+            members.forEach(m => {
+                if (isMemberEligibleForMonth(m, selectedMonth)) {
+                    const pStatus = monthRecords[m.id] || 'pending';
+                    if (pStatus === 'pending') pendingCount++;
+                }
+            });
+            document.getElementById('statPendingCount').innerText = pendingCount;
+        }
+
+        // --- ATTENDANCE VIEW ---
+        function loadAttendanceForDate() {
+            const date = document.getElementById('attendanceDate').value;
+            const tbody = document.getElementById('attendanceTableBody');
+            tbody.innerHTML = '';
+
+            const activeMembersForDate = members.filter(m => isMemberEligibleForDate(m, date));
+
+            if (activeMembersForDate.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted);">Δεν υπάρχουν εγγεγραμμένα μέλη για αυτή την ημερομηνία.</td></tr>`;
+                return;
+            }
+
+            const dayData = attendanceData[date] || {};
+
+            activeMembersForDate.forEach(m => {
+                const status = dayData[m.id] || 'absent';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${escapeHtml(m.lastName)} ${escapeHtml(m.firstName)}</strong></td>
+                    <td>${escapeHtml(m.phone1 || '-')}</td>
+                    <td>
+                        <button type="button" class="toggle-btn ${status === 'present' ? 'active-present' : 'active-absent'}" 
+                                onclick="toggleAttendance('${date}', '${m.id}')">
+                            ${status === 'present' ? '<i class="fa-solid fa-check"></i> Παρών/ούσα' : '<i class="fa-solid fa-xmark"></i> Απών/ούσα'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            renderStats();
+        }
+
+        function toggleAttendance(date, memberId) {
+            if (!attendanceData[date]) attendanceData[date] = {};
+            attendanceData[date][memberId] = attendanceData[date][memberId] === 'present' ? 'absent' : 'present';
+            saveData();
+        }
+
+        // --- PAYMENTS VIEW ---
+        function loadPaymentsForMonth() {
+            const month = document.getElementById('paymentMonth').value;
+            const tbody = document.getElementById('paymentsTableBody');
+            tbody.innerHTML = '';
+
+            const activeMembersForMonth = members.filter(m => isMemberEligibleForMonth(m, month));
+
+            if (activeMembersForMonth.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted);">Δεν υπάρχουν εγγεγραμμένα μέλη για αυτόν τον μήνα.</td></tr>`;
+                return;
+            }
+
+            if (!monthlyPayments[month]) {
+                monthlyPayments[month] = {};
+            }
+
+            activeMembersForMonth.forEach(m => {
+                const pStatus = monthlyPayments[month][m.id] || 'pending';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${escapeHtml(m.lastName)} ${escapeHtml(m.firstName)}</strong></td>
+                    <td>${escapeHtml(m.phone1 || '-')}</td>
+                    <td>
+                        <button type="button" class="toggle-btn ${pStatus === 'paid' ? 'active-paid' : 'active-pending'}" 
+                                onclick="togglePayment('${month}', '${m.id}')">
+                            ${pStatus === 'paid' ? '<i class="fa-solid fa-circle-check"></i> Εξοφλήθηκε' : '<i class="fa-solid fa-clock"></i> Εκκρεμεί'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            renderStats();
+        }
+
+        function togglePayment(month, memberId) {
+            if (!monthlyPayments[month]) monthlyPayments[month] = {};
+            monthlyPayments[month][memberId] = monthlyPayments[month][memberId] === 'paid' ? 'pending' : 'paid';
+            saveData();
+        }
+
+        // --- EXPORT TO EXCEL ---
+        function exportMonthToExcel() {
+            const monthStr = document.getElementById('paymentMonth').value;
+            if (!monthStr) {
+                alert("Παρακαλώ επιλέξτε έναν μήνα.");
+                return;
+            }
+
+            const activeMembersForMonth = members.filter(m => isMemberEligibleForMonth(m, monthStr));
+
+            if (activeMembersForMonth.length === 0) {
+                alert("Δεν υπάρχουν ενεργά μέλη για εξαγωγή τον μήνα αυτόν.");
+                return;
+            }
+
+            const formattedMonthName = formatMonthDisplay(monthStr);
+
+            const datesInMonth = Object.keys(attendanceData)
+                .filter(d => d.startsWith(monthStr))
+                .sort();
+
+            const monthPayments = monthlyPayments[monthStr] || {};
+
+            const attendanceRows = [];
+            
+            attendanceRows.push([`ΜΗΝΑΣ: ${formattedMonthName.toUpperCase()}`]);
+            attendanceRows.push([]);
+
+            const attHeader = ['Επίθετο', 'Όνομα', 'Τηλέφωνο', 'Συνδρομή Μήνα'];
+            datesInMonth.forEach(d => attHeader.push(formatDateDisplay(d)));
+            attHeader.push('Σύνολο Παρουσιών');
+            attendanceRows.push(attHeader);
+
+            activeMembersForMonth.forEach(m => {
+                let presentTotal = 0;
+                const pStatus = monthPayments[m.id] === 'paid' ? 'Εξοφλήθηκε' : 'Εκκρεμεί';
+                const row = [m.lastName, m.firstName, m.phone1 || '', pStatus];
+                
+                datesInMonth.forEach(d => {
+                    if (isMemberEligibleForDate(m, d)) {
+                        const status = attendanceData[d]?.[m.id] || 'absent';
+                        if (status === 'present') {
+                            row.push('Παρών');
+                            presentTotal++;
+                        } else {
+                            row.push('Απών');
+                        }
+                    } else {
+                        row.push('-');
+                    }
+                });
+
+                row.push(presentTotal);
+                attendanceRows.push(row);
+            });
+
+            const paymentRows = [
+                [`ΜΗΝΑΣ: ${formattedMonthName.toUpperCase()}`],
+                [],
+                ['Επίθετο', 'Όνομα', 'Τηλέφωνο 1', 'Τηλέφωνο 2', 'Email', `Κατάσταση Συνδρομής`]
+            ];
+
+            activeMembersForMonth.forEach(m => {
+                const pStatus = monthPayments[m.id] === 'paid' ? 'Εξοφλήθηκε' : 'Εκκρεμεί';
+                paymentRows.push([
+                    m.lastName,
+                    m.firstName,
+                    m.phone1 || '',
+                    m.phone2 || '',
+                    m.email || '',
+                    pStatus
+                ]);
+            });
+
+            const wb = XLSX.utils.book_new();
+            
+            const wsAttendance = XLSX.utils.aoa_to_sheet(attendanceRows);
+            const wsPayments = XLSX.utils.aoa_to_sheet(paymentRows);
+
+            XLSX.utils.book_append_sheet(wb, wsAttendance, "Παρουσίες Μήνα");
+            XLSX.utils.book_append_sheet(wb, wsPayments, "Συνδρομές Μήνα");
+
+            const defaultFileName = `Σύλλογος_${formattedMonthName.replace(/\s+/g, '_')}.xlsx`;
+
+            XLSX.writeFile(wb, defaultFileName);
+        }
+
+        // --- MEMBERS MANAGEMENT ---
+        function renderMembersTable() {
+            const tbody = document.getElementById('membersTableBody');
+            const search = document.getElementById('memberSearch').value.toLowerCase();
+            tbody.innerHTML = '';
+
+            const filtered = members.filter(m => 
+                m.firstName.toLowerCase().includes(search) || 
+                m.lastName.toLowerCase().includes(search) ||
+                m.phone1.includes(search)
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Δεν βρέθηκαν μέλη.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(m => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${escapeHtml(m.lastName)} ${escapeHtml(m.firstName)}</strong></td>
+                    <td>${formatDateDisplay(getMemberRegistrationDate(m))}</td>
+                    <td>${escapeHtml(m.phone1)}${m.phone2 ? ' / ' + escapeHtml(m.phone2) : ''}</td>
+                    <td>${escapeHtml(m.email || '-')}</td>
+                    <td>${escapeHtml(m.notes || '-')}</td>
+                    <td class="action-btns">
+                        <button type="button" class="icon-btn" onclick="editMember('${m.id}')" title="Επεξεργασία"><i class="fa-solid fa-pen"></i></button>
+                        <button type="button" class="icon-btn delete" onclick="deleteMember('${m.id}')" title="Διαγραφή"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openMemberModal() {
+            document.getElementById('memberForm').reset();
+            document.getElementById('memberId').value = '';
+            
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            document.getElementById('createdDate').value = `${year}-${month}-${day}`;
+
+            document.getElementById('modalTitle').innerText = 'Προσθήκη Νέου Μέλους';
+            document.getElementById('memberModal').classList.add('active');
+        }
+
+        function closeMemberModal() {
+            document.getElementById('memberModal').classList.remove('active');
+        }
+
+        function editMember(id) {
+            const m = members.find(item => item.id === id);
+            if (!m) return;
+
+            document.getElementById('memberId').value = m.id;
+            document.getElementById('firstName').value = m.firstName;
+            document.getElementById('lastName').value = m.lastName;
+            document.getElementById('createdDate').value = getMemberRegistrationDate(m);
+            document.getElementById('phone1').value = m.phone1;
+            document.getElementById('phone2').value = m.phone2;
+            document.getElementById('email').value = m.email;
+            document.getElementById('notes').value = m.notes;
+
+            document.getElementById('modalTitle').innerText = 'Επεξεργασία Μέλους';
+            document.getElementById('memberModal').classList.add('active');
+        }
+
+        function saveMember(e) {
+            e.preventDefault();
+            const id = document.getElementById('memberId').value;
+            
+            const memberData = {
+                id: id || 'm_' + Date.now(),
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                createdDate: document.getElementById('createdDate').value || new Date().toISOString().split('T')[0],
+                phone1: document.getElementById('phone1').value.trim(),
+                phone2: document.getElementById('phone2').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                notes: document.getElementById('notes').value.trim(),
+            };
+
+            if (id) {
+                const index = members.findIndex(m => m.id === id);
+                if (index !== -1) members[index] = memberData;
+            } else {
+                members.push(memberData);
+            }
+
+            saveData();
+            closeMemberModal();
+        }
+
+        function deleteMember(id) {
+            if (confirm("Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το μέλος; Θα διαγραφεί και από τα ιστορικά.")) {
+                members = members.filter(m => m.id !== id);
+                
+                Object.keys(attendanceData).forEach(date => {
+                    delete attendanceData[date][id];
+                    if (Object.keys(attendanceData[date]).length === 0) {
+                        delete attendanceData[date];
+                    }
+                });
+
+                Object.keys(monthlyPayments).forEach(m => {
+                    delete monthlyPayments[m][id];
+                    if (Object.keys(monthlyPayments[m]).length === 0) {
+                        delete monthlyPayments[m];
+                    }
+                });
+
+                saveData();
+            }
+        }
+
+        // --- HISTORY VIEW ---
+        function renderHistoryTable() {
+            const tbody = document.getElementById('historyTableBody');
+            tbody.innerHTML = '';
+
+            const dates = Object.keys(attendanceData).sort().reverse();
+
+            if (dates.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Δεν υπάρχει καταγεγραμμένο ιστορικό.</td></tr>`;
+                return;
+            }
+
+            const groupedByMonth = {};
+            dates.forEach(d => {
+                const monthKey = d.substring(0, 7);
+                if (!groupedByMonth[monthKey]) groupedByMonth[monthKey] = [];
+                groupedByMonth[monthKey].push(d);
+            });
+
+            Object.keys(groupedByMonth).sort().reverse().forEach(monthKey => {
+                const monthRecords = monthlyPayments[monthKey] || {};
+                let pendingInMonth = 0;
+                
+                const activeInMonth = members.filter(m => isMemberEligibleForMonth(m, monthKey));
+
+                activeInMonth.forEach(m => {
+                    if ((monthRecords[m.id] || 'pending') === 'pending') {
+                        pendingInMonth++;
+                    }
+                });
+
+                const monthTr = document.createElement('tr');
+                monthTr.className = 'month-header-row';
+                monthTr.innerHTML = `
+                    <td colspan="5" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fa-solid fa-calendar-days"></i> Μήνας: ${formatMonthDisplay(monthKey)}</span>
+                        <span class="badge badge-pending"><i class="fa-solid fa-receipt"></i> Εκκρεμείς Συνδρομές: ${pendingInMonth}</span>
+                    </td>
+                `;
+                tbody.appendChild(monthTr);
+
+                groupedByMonth[monthKey].forEach(date => {
+                    const dayData = attendanceData[date] || {};
+                    const activeForDate = members.filter(m => isMemberEligibleForDate(m, date));
+                    const total = activeForDate.length;
+                    
+                    let present = 0;
+                    activeForDate.forEach(m => {
+                        if (dayData[m.id] === 'present') {
+                            present++;
+                        }
+                    });
+                    const absent = total - present;
+
+                    const dayName = getDayOfWeek(date);
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="padding-left:30px;">📅 ${formatDateDisplay(date)} - ${dayName}</td>
+                        <td>${total}</td>
+                        <td><span class="badge badge-success">${present} Παρόντες</span></td>
+                        <td><span class="badge badge-danger">${absent} Απόντες</span></td>
+                        <td class="action-btns">
+                            <button type="button" class="icon-btn delete" onclick="deleteAttendanceDate('${date}')" title="Διαγραφή ημερομηνίας">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        function deleteAttendanceDate(date) {
+            const formattedDate = formatDateDisplay(date);
+            if (confirm(`Είστε σίγουροι ότι θέλετε να διαγράψετε τις παρουσίες για την ημερομηνία ${formattedDate};`)) {
+                delete attendanceData[date];
+                saveData();
+            }
+        }
+
+        // --- UTILS ---
+        function getDayOfWeek(dateStr) {
+            if (!dateStr) return '';
+            const [year, month, day] = dateStr.split('-');
+            const d = new Date(year, parseInt(month, 10) - 1, day);
+            const days = ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"];
+            return days[d.getDay()];
+        }
+
+        function formatDateDisplay(dateStr) {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        function formatMonthDisplay(monthStr) {
+            if (!monthStr) return '';
+            const [year, month] = monthStr.split('-');
+            const monthNames = ["Ιανουάριος", "Φεβρουάριος", "Μάρτιος", "Απρίλιος", "Μάιος", "Ιούνιος", "Ιούλιος", "Αύγουστος", "Σεπτέμβριος", "Οκτώβριος", "Νοέμβριος", "Δεκέμβριος"];
+            return `${monthNames[parseInt(month, 10) - 1]} ${year}`;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+</body>
+</html>
